@@ -28,9 +28,9 @@ function renderPostList() {
             <button onclick="deletePost(${post.id})">Borrar</button>
             
             <div id="editForm-${post.id}" class="editForm" style="display:none">
-                <label for="editTitle">Título: </label>
+                <label for="editTitle-${post.id}">Título: </label>
                 <input type="text" id="editTitle-${post.id}" value="${post.title}" required>
-                <label for="editBody"> Comentario: </label>
+                <label for="editBody-${post.id}"> Comentario: </label>
                 <textarea id="editBody-${post.id}" required>${post.body}</textarea>
                 <button onclick="updatePost(${post.id})"> Actualizar </button>
             </div>
@@ -64,6 +64,8 @@ function postData() {
   })
     .then(res => res.json())
     .then(data => {
+      let newId = posts.length > 0 ? Math.max(...posts.map(post => post.id)) + 1 : 1;
+      data.id = newId;
       posts.unshift(data);
       renderPostList();
       postTitleInput.value = "";
